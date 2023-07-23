@@ -43,7 +43,7 @@ const gameBoard = (() => {
 
     //writes initial array of gameItems to the DOM
     //then, adds event listeners to each item square
-    //when each square is clicked, set innertext to whoever is active player
+    //when each square is clicked, set innertext to whoever is active player's symbol
     //and then toggle active status (i.e. next turn)
     const writeItems = () => {
         for (x = 0; x < gameItems.length; x++) {
@@ -55,9 +55,14 @@ const gameBoard = (() => {
         }
         const itemSelection = gameSpace.querySelectorAll(".square");
         itemSelection.forEach((square) => {
-            square.addEventListener("click", () => {
+            //normally I would use an anon function in place of 'eventHandler'
+            //but in order to remove it I had to name it
+            square.addEventListener("click", function eventHandler(event) {
                 square.innerText = whoActive().symbol;
                 nextTurn();
+                //make square unchangeable after initial click by removing
+                //the event listener
+                event.target.removeEventListener("click", eventHandler);
             })
         })
     }
@@ -66,8 +71,8 @@ const gameBoard = (() => {
     }
 
 
-
-    return {initActivePlayer, nextTurn, whoActive, gameItems, writeItems, clearBoard};
+    //only make the things public that need to be public
+    return {initActivePlayer, writeItems};
 })()
 
 
