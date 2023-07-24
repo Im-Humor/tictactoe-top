@@ -72,10 +72,41 @@ const gameBoard = (() => {
 
 
     //only make the things public that need to be public
-    return {initActivePlayer, writeItems};
+    return {initActivePlayer, writeItems, gameItems};
 })()
 
 
 
 gameBoard.initActivePlayer(player1);
 gameBoard.writeItems();
+
+//TODO: add logic for checking winner
+
+let winner = "";
+switch(gameBoard.gameItems) {
+    case ["x", "x", "x", "", "", "", "", "", ""]:
+        winner = player1.name;
+        break;
+    case ["", "", "", "x", "x", "x", "", "", ""]:
+        winner = player1.name;
+        break;
+    case ["", "", "", "", "", "", "x", "x", "x"]:
+        winner = player1.name;
+        break;
+    case ["x", "", "", "x", "", "", "x", "", ""]:
+        winner = player1.name;
+        break;
+    case ["", "x", "", "", "x", "", "", "x", ""]:
+        winner = player1.name;
+        break;
+    case ["", "", "x", "", "", "x", "", "", "x"]:
+        winner = player1.name;
+        break;
+    case ["x", "", "", "", "x", "", "", "", "x"]:
+        winner = player1.name;
+        break;
+    case ["", "", "x", "", "x", "", "x", "", ""]:
+        winner = player1.name;
+        break;
+
+}
