@@ -29,3 +29,7 @@ body {
 .square {
     border: solid 2px blue;
 }
+
+.winner-name {
+    border: solid 2px brown;
+}

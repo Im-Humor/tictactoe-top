@@ -20,7 +20,6 @@ const gameBoard = (() => {
     //called onclick, flips active status for all players
     const nextTurn = () => {
         for (x = 0; x < playerArray.length; x++) {
-            console.log(`${playerArray[x].name} is set from ${playerArray[x].active} to ${!playerArray[x].active}`)
             playerArray[x].active = !playerArray[x].active;
         }
     }
@@ -51,15 +50,29 @@ const gameBoard = (() => {
             gameSpace.appendChild(gameSquare);
         }
         const itemSelection = gameSpace.querySelectorAll(".square");
+        //I only know 'index' is available to call within the forEach method's callback
+        //because the documentation states so lol
         itemSelection.forEach((square, index) => {
             //normally I would use an anon function in place of 'eventHandler'
             //but in order to remove it I had to name it
             square.addEventListener("click", function eventHandler(event) {
+                console.log(gameLogic.checkWin(gameItems))
+                //for some reason if I take out either of these if statements,
+                //the game doesn't work as intended
+                if (gameLogic.checkWin(gameItems) === 1) {
+                    event.target.removeEventListener("click", eventHandler);
+                    return;
+                }
                 square.innerText = whoActive().symbol;
                 gameItems[index] = whoActive().symbol;
-                console.log(gameItems)
+
+                if (gameLogic.checkWin(gameItems) === 1) {
+                    event.target.removeEventListener("click", eventHandler);
+                    gameLogic.finalizeWin();
+                    return;
+                }
                 nextTurn();
-                gameLogic.checkWin(gameItems);
+
                 //make square unchangeable after initial click by removing
                 //the event listener
                 event.target.removeEventListener("click", eventHandler);
@@ -72,7 +85,7 @@ const gameBoard = (() => {
 
 
     //only make the things public that need to be public
-    return {initActivePlayer, writeItems, gameItems};
+    return {gameSpace, initActivePlayer, writeItems, gameItems};
 })()
 
 const gameLogic = (() => {
@@ -81,85 +94,94 @@ const gameLogic = (() => {
         if (array[0] === "x" && array[1] === "x" && array[2] === "x"){
             winner = player1.name;
             console.log(`Winner is ${winner}`);
-            return;
+            return 1;
         }
         else if (array[3] === "x" && array[4] === "x" && array[5] === "x"){
             winner = player1.name;
             console.log(`Winner is ${winner}`);
-            return;
+            return 1;
         }
         else if (array[6] === "x" && array[7] === "x" && array[8] === "x"){
             winner = player1.name;
             console.log(`Winner is ${winner}`);
-            return;
+            return 1;
         }
         else if (array[0] === "x" && array[3] === "x" && array[6] === "x"){
             winner = player1.name;
             console.log(`Winner is ${winner}`);
-            return;
+            return 1;
         }
         else if (array[1] === "x" && array[4] === "x" && array[7] === "x"){
             winner = player1.name;
             console.log(`Winner is ${winner}`);
-            return;
+            return 1;
         }
         else if (array[2] === "x" && array[5] === "x" && array[8] === "x"){
             winner = player1.name;
             console.log(`Winner is ${winner}`);
-            return;
+            return 1;
         }
         else if (array[0] === "x" && array[4] === "x" && array[8] === "x"){
             winner = player1.name;
             console.log(`Winner is ${winner}`);
-            return;
+            return 1;
         }
         else if (array[2] === "x" && array[4] === "x" && array[6] === "x"){
             winner = player1.name;
             console.log(`Winner is ${winner}`);
-            return;
+            return 1;
         }
         if (array[0] === "o" && array[1] === "o" && array[2] === "o"){
             winner = player2.name;
             console.log(`Winner is ${winner}`);
-            return;
+            return 1;
         }
         else if (array[3] === "o" && array[4] === "o" && array[5] === "o"){
             winner = player2.name;
             console.log(`Winner is ${winner}`);
-            return;
+            return 1;
         }
         else if (array[6] === "o" && array[7] === "o" && array[8] === "o"){
             winner = player2.name;
             console.log(`Winner is ${winner}`);
-            return;
+            return 1;
         }
         else if (array[0] === "o" && array[3] === "o" && array[6] === "o"){
             winner = player2.name;
             console.log(`Winner is ${winner}`);
-            return;
+            return 1;
         }
         else if (array[1] === "o" && array[4] === "o" && array[7] === "o"){
             winner = player2.name;
             console.log(`Winner is ${winner}`);
-            return;
+            return 1;
         }
         else if (array[2] === "o" && array[5] === "o" && array[8] === "o"){
             winner = player2.name;
             console.log(`Winner is ${winner}`);
-            return;
+            return 1;
         }
         else if (array[0] === "o" && array[4] === "o" && array[8] === "o"){
             winner = player2.name;
             console.log(`Winner is ${winner}`);
-            return;
+            return 1;
         }
         else if (array[2] === "o" && array[4] === "o" && array[6] === "o"){
             winner = player2.name;
             console.log(`Winner is ${winner}`);
-            return;
+            return 1;
         }
     }
-    return {checkWin};
+    const finalizeWin = () => {
+        const winnerName = document.querySelector(".winner-name");
+        for (x=0; x < playerArray.length; x++) {
+            if (playerArray[x].active === true) {
+                winnerName.innerText = playerArray[x].name;
+            }
+        }
+
+    }
+    return {checkWin, finalizeWin};
 })()
 
 
