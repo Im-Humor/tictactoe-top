@@ -1,13 +1,37 @@
 const playerFactory = (name, symbol, active) => {
-    return {name, symbol, active}
-}
+    return {name, symbol, active};
+};
 
-const player1 = playerFactory("mark", "x", false);
-const player2 = playerFactory("stacy", "o", false);
+// create logic for name input submit buttons
 
 //player array used to help search through players
 //helpful to find and flip active status
-const playerArray = [player1, player2];
+const playerArray = [];
+
+const name1Button = document.querySelector("#name1-button");
+const player1Output = document.querySelector(".player1-output");
+
+const p1Event = () => {
+    const name1Content = document.querySelector("#name1");
+    player1Output.innerHTML = `<p>Player 1 is ${name1Content.value}</p>`;
+    const player1 = playerFactory(`${name1Content.value}`, "x", true);
+    playerArray.push(player1);
+};
+
+name1Button.addEventListener("click", p1Event)
+
+const name2Button = document.querySelector("#name2-button");
+const player2Output = document.querySelector(".player2-output");
+
+const p2Event = () => {
+    const name2Content = document.querySelector("#name2");
+    player2Output.innerHTML = `<p>Player 2 is ${name2Content.value}</p>`;
+    const player2 = playerFactory(`${name2Content.value}`, "o", false);
+    playerArray.push(player2);
+};
+
+name2Button.addEventListener("click", p2Event);
+
 
 //create gameBoard module
 const gameBoard = (() => {
@@ -15,14 +39,14 @@ const gameBoard = (() => {
 
     const initActivePlayer = (player) => {
         player.active = true;
-    }
+    };
 
     //called onclick, flips active status for all players
     const nextTurn = () => {
         for (x = 0; x < playerArray.length; x++) {
             playerArray[x].active = !playerArray[x].active;
-        }
-    }
+        };
+    };
 
     //returns the active player by finding which player has active
     //status set to true
@@ -30,9 +54,9 @@ const gameBoard = (() => {
         for (x = 0; x < playerArray.length; x++) {
             if (playerArray[x].active === true) {
                 return playerArray[x];
-            }
-        }
-    }
+            };
+        };
+    };
 
     //initial array of game items
     let gameItems = ["", "", "", "", "", "", "", "", ""];
@@ -78,6 +102,7 @@ const gameBoard = (() => {
                 event.target.removeEventListener("click", eventHandler);
             })
         })
+
     }
     const clearBoard = () => {
         gameSpace.innerHTML = "";
@@ -91,6 +116,10 @@ const gameBoard = (() => {
 const gameLogic = (() => {
     let winner = "";
     const checkWin = (array) => {
+        //it took me 10 years to figure out these next to line had to go here
+        //why can't they go right under gameLogic's declaration?
+        const player1 = playerArray[0];
+        const player2 = playerArray[1];
         if (array[0] === "x" && array[1] === "x" && array[2] === "x"){
             winner = player1.name;
             console.log(`Winner is ${winner}`);
@@ -185,5 +214,4 @@ const gameLogic = (() => {
 })()
 
 
-gameBoard.initActivePlayer(player1);
 gameBoard.writeItems();
