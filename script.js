@@ -2,7 +2,7 @@ const playerFactory = (name, symbol, active) => {
     return {name, symbol, active};
 };
 
-// create logic for name input submit buttons
+// create logic for name input submit buttons/forms
 
 //player array used to help search through players
 //helpful to find and flip active status
@@ -16,6 +16,7 @@ const p1Event = () => {
     player1Output.innerHTML = `<p>Player 1 is ${name1Content.value}</p>`;
     const player1 = playerFactory(`${name1Content.value}`, "x", true);
     playerArray.push(player1);
+    document.querySelector(".player1-input").innerHTML = "";
 };
 
 name1Button.addEventListener("click", p1Event)
@@ -28,6 +29,7 @@ const p2Event = () => {
     player2Output.innerHTML = `<p>Player 2 is ${name2Content.value}</p>`;
     const player2 = playerFactory(`${name2Content.value}`, "o", false);
     playerArray.push(player2);
+    document.querySelector(".player2-input").innerHTML = "";
 };
 
 name2Button.addEventListener("click", p2Event);
